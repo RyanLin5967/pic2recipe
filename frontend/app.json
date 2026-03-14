@@ -1,0 +1,6 @@
+{
+  "plugins": [
+    "react-native-vision-camera",
+    "react-native-fast-tflite"
+  ]
+}
