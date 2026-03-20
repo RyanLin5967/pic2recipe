@@ -3,12 +3,16 @@ __pycache__/
 *.py[codz]
 *$py.class
 
+docker-compose.yml
+Dockerfile
 # C extensions
 *.so
 node_modules
 .expo
 pg_data
 # Distribution / packaging
+package.json/
+package-lock.json/
 .Python
 build/
 develop-eggs/
