@@ -5,3 +5,8 @@ psycopg2-binary
 scikit-learn
 pyjwt
 pytest
+pydantic-settings
+pydantic
+sentence_transformers
+fastapi[standard]
+pgvector
