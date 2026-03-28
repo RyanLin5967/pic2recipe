@@ -2,10 +2,10 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from config import settings
 from api.routers import recipes
+from ml import ml_model
 from contextlib import asynccontextmanager
 from sentence_transformers import SentenceTransformer
 
-ml_model = {}
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     ml_model["transformer"] = SentenceTransformer(f"{settings.MODEL_NAME}")

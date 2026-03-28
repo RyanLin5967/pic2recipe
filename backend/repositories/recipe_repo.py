@@ -9,7 +9,7 @@ def get_recipe(db, query_embedding, limit=5):
             Recipe.title,
             Recipe.ingredients,
             Recipe.directions,
-            Recipe.ner,
+            Recipe.ner, # returning this might be an issue later cuz response schema doesn't have this (fine for now)
             (1-Recipe.embedding.cosine_distance(query_embedding)).label("similarity")
         )
         .order_by(Recipe.embedding.cosine_distance(query_embedding))
