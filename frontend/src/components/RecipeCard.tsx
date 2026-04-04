@@ -1,0 +1,27 @@
+import { View, Text, Pressable } from "react-native"
+import { router } from "expo-router"
+
+export interface Recipe {
+  id: number
+  title: string
+  ingredients: string[]
+  directions: string[]
+  similarity: number
+}
+
+export default function RecipeCard({recipe}: {recipe: Recipe}){
+  return (
+    <View className="flex bg-[rgb(42,44,50)] m-2 mx-8 border border-[rgb(57,59,67)] rounded-3xl">
+      <Text className="text-white font-bold text-2xl pl-5 pt-4">{recipe.title}</Text>
+      <View className="flex flex-row">
+        <View className="ml-5 mt-2 p-1 px-2 bg-[rgb(237,84,19)] rounded-2xl"><Text className="font-bold">{(recipe.similarity)*100}% Match</Text></View>
+        <View className="ml-2 mt-2 p-1 px-2 bg-[rgb(37,72,66)] rounded-2xl"><Text className="text-[rgb(43,201,154)] font-bold">Easy</Text></View>
+      </View>
+      <Text className="ml-5 my-4 text-[rgb(167,167,167)]">Uses your Chicken, Garlic, Onion</Text>
+      <View className="flex flex-row">
+        <Text className="ml-5 mt-3 mb-5 text-[rgb(167,167,167)]">⏱️ 20 min</Text>
+        <Pressable onPress={() => router.push(`/recipe/${recipe.id}`)}className="p-2 px-4 m-2 ml-auto mr-3 bg-[rgb(28,29,33)] border border-[rgb(237,84,19)] rounded-3xl"><Text className="text-[rgb(237,84,19)] font-bold">View Recipe</Text></Pressable>
+      </View>
+    </View>
+  )
+}
