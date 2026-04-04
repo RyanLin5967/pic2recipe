@@ -9,3 +9,8 @@ class RecipeResponse(BaseModel):
     ingredients: list[str]
     directions: list[str]
     similarity: float
+
+class IdResponse(BaseModel):
+    title: str
+    ingredients: list[str]
+    directions: list[str]

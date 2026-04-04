@@ -16,3 +16,13 @@ def get_recipe(db, query_embedding, limit=5):
         .limit(limit)
     ).all()
     return result
+
+def get_from_id(db, id):
+    result = db.execute(
+        select(
+            Recipe.title,
+            Recipe.ingredients,
+            Recipe.directions,
+        )
+        .where(Recipe.id == id)).one()
+    return result
