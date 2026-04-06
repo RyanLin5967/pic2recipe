@@ -1,6 +1,6 @@
 import { View, Text, Pressable, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import {Recipe} from "@/src/components/RecipeCard"
+import {Recipe} from "@/src/types/index"
 import RecipeCard from "@/src/components/RecipeCard";
 import {router} from "expo-router"
 import {ChevronLeft} from "lucide-react-native"
@@ -8,7 +8,7 @@ import {ChevronLeft} from "lucide-react-native"
 export default function Results(){
   const recipe: Recipe = {
     id: 69,
-    title: "poo",
+    title: "Garlic Button Chicken",
     ingredients: ["a", "b", "c"],
     directions: ["d", "e", "f"],
     similarity: 0.99

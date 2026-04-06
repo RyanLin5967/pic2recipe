@@ -1,14 +1,6 @@
 import { View, Text, Pressable } from "react-native"
 import { router } from "expo-router"
-
-export interface Recipe {
-  id: number
-  title: string
-  ingredients: string[]
-  directions: string[]
-  similarity: number
-}
-
+import {Recipe} from "@/src/types/index"
 export default function RecipeCard({recipe}: {recipe: Recipe}){
   return (
     <View className="flex bg-[rgb(42,44,50)] m-2 mx-8 border border-[rgb(57,59,67)] rounded-3xl">
