@@ -6,8 +6,9 @@ import {router} from "expo-router"
 import {ChevronLeft} from "lucide-react-native"
 import {useRecipeSearch} from '@/src/hooks/useRecipeSearch'
 
+const ingredients = ["chicken", "butter", "onion"]
+
 export default function Results(){
-  let ingredients = ["chicken", "butter", "onion"]
   const {data: recipes, isError, error, isPending} = useRecipeSearch(ingredients)
   return (
     <SafeAreaView className="flex-1 bg-[rgb(28,29,33)]">
