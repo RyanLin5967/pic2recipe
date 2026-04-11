@@ -15,7 +15,7 @@ export default function RecipeDetail() {
   const {data: recipe, isError, isPending} = useRecipeDetail(numId)
   const tabs = ["Ingredients", "Equipment", "Instructions"]
   const [selected, setSelected] = useState(tabs[0])
-  const equipment = ["skillet", "pan"]
+  const equipment = recipe?.equipment ?? ["Unknown"]
   const ingredients = recipe?.ingredients
   const instructions = recipe?.directions
   const title = recipe?.title
@@ -27,8 +27,8 @@ export default function RecipeDetail() {
         <Text className="text-4xl font-bold text-white">{title}</Text>
       </View>
       <View className="flex flex-row">
-        <Text className="ml-5 text-[rgb(167,167,167)]">⏱️ 20 min</Text>
-        <View className="ml-5 px-2 bg-[rgb(37,72,66)] rounded-2xl"><Text className="text-[rgb(43,201,154)] font-bold">Easy</Text></View>
+        <Text className="ml-5 text-[rgb(167,167,167)]">⏱️ {recipe?.cook_time_minutes ?? "Unknown"} min</Text>
+        <View className="ml-5 px-2 bg-[rgb(37,72,66)] rounded-2xl"><Text className="text-[rgb(43,201,154)] font-bold">{recipe?.difficulty ?? "Unknown"}</Text></View>
       </View>
       <View className="flex flex-row">
         {tabs.map((tab, index) => (
@@ -39,7 +39,7 @@ export default function RecipeDetail() {
       </View>
       {selected === "Ingredients" && <IngredientsOption ingredients={ingredients!}/>}
       {selected === "Instructions" && <InstructionOption instructions={instructions!}/>}
-      {selected === "Equipment" && <EquipmentOption equipment={equipment}/>}
+      {selected === "Equipment" && <EquipmentOption equipment={equipment!}/>}
     </SafeAreaView>
   );
 }

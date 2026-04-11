@@ -18,7 +18,7 @@ export default function Results(){
           <Text className="p-2 ml-4 text-white font-bold text-3xl">We Found 5 Matches</Text>
         </View>
         {recipes?.map((recipe, index) => (
-          <RecipeCard key={index} recipe={recipe}/>
+          <RecipeCard key={index} recipe={recipe} ingredients={ingredients}/>
         ))}
       </ScrollView>
     </SafeAreaView>

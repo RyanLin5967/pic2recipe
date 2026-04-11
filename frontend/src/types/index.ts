@@ -4,4 +4,7 @@ export interface Recipe {
   ingredients: string[]
   directions: string[]
   similarity: number
+  cook_time_minutes: number
+  difficulty: string
+  equipment: string[]
 }
