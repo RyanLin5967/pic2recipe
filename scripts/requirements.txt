@@ -1,3 +1,4 @@
 psycopg2
 sentence_transformers
 datasets==2.21.0
+pandas

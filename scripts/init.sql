@@ -6,5 +6,8 @@ CREATE TABLE recipes (
     ingredients TEXT[] NOT NULL,
     directions TEXT[] NOT NULL,
     ner TEXT[] NOT NULL,
-    embedding vector(768) NOT NULL
-)
+    embedding vector(768) NOT NULL,
+    cook_time_minutes INTEGER,
+    equipment TEXT[],
+    difficulty TEXT
+);
