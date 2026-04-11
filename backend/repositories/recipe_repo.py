@@ -9,8 +9,11 @@ def get_recipe(db, query_embedding, limit=5):
             Recipe.title,
             Recipe.ingredients,
             Recipe.directions,
-            Recipe.ner, # returning this might be an issue later cuz response schema doesn't have this (fine for now)
-            (1-Recipe.embedding.cosine_distance(query_embedding)).label("similarity")
+            Recipe.ner,
+            (1-Recipe.embedding.cosine_distance(query_embedding)).label("similarity"),
+            Recipe.cook_time_minutes,
+            Recipe.equipment,
+            Recipe.difficulty
         )
         .order_by(Recipe.embedding.cosine_distance(query_embedding))
         .limit(limit)
@@ -23,6 +26,9 @@ def get_from_id(db, id):
             Recipe.title,
             Recipe.ingredients,
             Recipe.directions,
+            Recipe.cook_time_minutes,
+            Recipe.equipment,
+            Recipe.difficulty
         )
         .where(Recipe.id == id)).one()
     return result
