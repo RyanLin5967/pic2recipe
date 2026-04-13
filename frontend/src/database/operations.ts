@@ -15,3 +15,8 @@ export async function removeIngredient(id: string){
         await ingredient.destroyPermanently()
     })
 }
+
+export async function getIngredients(){
+    const allIngredients = await database.get<Ingredient>('ingredients').query().fetch()
+    return allIngredients.map(ing => ing.title)
+}

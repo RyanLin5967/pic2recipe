@@ -8,7 +8,7 @@ import IngredientsOption from "@/src/components/IngredientsOption";
 import EquipmentOption from "@/src/components/EquipmentOption";
 import InstructionOption from "@/src/components/InstructionOption";
 import { useRecipeDetail } from '@/src/hooks/useRecipeDetail'
-
+import { handleFindRecipes } from "../(tabs)";
 export default function RecipeDetail() {
   const { id } = useLocalSearchParams();
   const numId = Number(Array.isArray(id) ? id[0] : id)
@@ -21,7 +21,7 @@ export default function RecipeDetail() {
   const title = recipe?.title
   return (
     <SafeAreaView className="flex-1 bg-[rgb(28,29,33)]">
-      <Pressable onPress={() => router.push("/results")} className="self-start p-2 bg-[rgb(63,69,79)] ml-4 rounded-2xl"><ChevronLeft color={"white"}/></Pressable>
+      <Pressable onPress={handleFindRecipes} className="self-start p-2 bg-[rgb(63,69,79)] ml-4 rounded-2xl"><ChevronLeft color={"white"}/></Pressable>
       <View className="mt-5 h-[1px] bg-[rgb(59,61,69)]"></View>
       <View className="flex p-4 bg-[rgb(28,29,33)]">
         <Text className="text-4xl font-bold text-white">{title}</Text>

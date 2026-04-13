@@ -7,6 +7,12 @@ import Ingredient from "@/src/database/models/Ingredient";
 import { useState } from 'react'
 import { Plus } from 'lucide-react-native'
 import { addIngredient } from "@/src/database/operations";
+import { getIngredients } from "@/src/database/operations";
+
+export const handleFindRecipes = async () => {
+    let ingredients = await getIngredients()
+    router.push({pathname: "/results", params: {ingredients: JSON.stringify(ingredients)}})
+}
 
 export default function HomeScreen() {
   const [modalVisible, setModalVisible] = useState(false)
@@ -27,7 +33,7 @@ export default function HomeScreen() {
          <Pressable onPress={() => setModalVisible(true)} className="absolute bottom-24 right-6 bg-[rgb(237,84,19)] rounded-full p-4">
             <Plus color="rgb(28,29,33)" size={28} />
           </Pressable>
-        <Pressable onPress={() => router.push("/results")}className="flex mt-auto bg-[rgb(237,84,19)] mx-10 rounded-2xl">
+        <Pressable onPress={handleFindRecipes}className="flex mt-auto bg-[rgb(237,84,19)] mx-10 rounded-2xl">
             <Text className="p-4 text-center text-[rgb(28,29,33)] text-xl font-bold ">Find Recipes</Text>
         </Pressable>
       </View>

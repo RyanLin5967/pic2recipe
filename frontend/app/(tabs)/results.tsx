@@ -1,15 +1,16 @@
 import { View, Text, Pressable, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import {Recipe} from "@/src/types/index"
 import RecipeCard from "@/src/components/RecipeCard";
-import {router} from "expo-router"
+import {router, useLocalSearchParams} from "expo-router"
 import {ChevronLeft} from "lucide-react-native"
 import {useRecipeSearch} from '@/src/hooks/useRecipeSearch'
 
-const ingredients = ["chicken", "butter", "onion"]
 
 export default function Results(){
+  const { ingredients: ingredientsStr } = useLocalSearchParams<{ingredients: string}>()
+  const ingredients = ingredientsStr ? JSON.parse(ingredientsStr) as string[]: []
   const {data: recipes, isError, error, isPending} = useRecipeSearch(ingredients)
+
   return (
     <SafeAreaView className="flex-1 bg-[rgb(28,29,33)]">
       <ScrollView>
