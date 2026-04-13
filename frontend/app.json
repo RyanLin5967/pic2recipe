@@ -13,15 +13,27 @@
     },
     "android": {
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.anonymous.frontend"
     },
     "web": {
       "output": "static"
     },
     "plugins": [
       "expo-router",
-      "expo-splash-screen"
-      
+      "expo-splash-screen",
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "kotlinVersion": "2.0.21",
+            "packagingOptions": {
+              "pickFirst": ["**/libc++_shared.so"]
+            }
+          }
+        }
+      ],
+      "@lovesworking/watermelondb-expo-plugin-sdk-52-plus"
     ],
     "experiments": {
       "typedRoutes": true,
