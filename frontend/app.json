@@ -28,13 +28,21 @@
           "android": {
             "kotlinVersion": "2.0.21",
             "packagingOptions": {
-              "pickFirst": ["**/libc++_shared.so"]
+              "pickFirst": [
+                "**/libc++_shared.so"
+              ]
             }
           }
         }
       ],
-      "@lovesworking/watermelondb-expo-plugin-sdk-52-plus"
-    ],
+      "@lovesworking/watermelondb-expo-plugin-sdk-52-plus",
+      [
+      "react-native-vision-camera",
+      {
+        "cameraPermissionText": "pic2recipe needs access to your Camera."
+      }
+    ]    
+  ],
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true

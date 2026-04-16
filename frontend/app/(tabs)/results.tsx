@@ -5,7 +5,6 @@ import {router, useLocalSearchParams} from "expo-router"
 import {ChevronLeft} from "lucide-react-native"
 import {useRecipeSearch} from '@/src/hooks/useRecipeSearch'
 
-
 export default function Results(){
   const { ingredients: ingredientsStr } = useLocalSearchParams<{ingredients: string}>()
   const ingredients = ingredientsStr ? JSON.parse(ingredientsStr) as string[]: []

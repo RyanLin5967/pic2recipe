@@ -1,5 +1,6 @@
 import { View, Text, ScrollView } from "react-native";
 import {Dot} from "lucide-react-native"
+
 export default function EquipmentOption({equipment}: {equipment: string[]}){
   return (
     <ScrollView>
