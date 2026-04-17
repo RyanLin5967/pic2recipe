@@ -9,16 +9,27 @@ import EquipmentOption from "@/src/components/EquipmentOption";
 import InstructionOption from "@/src/components/InstructionOption";
 import { useRecipeDetail } from '@/src/hooks/useRecipeDetail'
 import { handleFindRecipes } from "../(tabs)";
+import LoadingScreen from "@/src/components/LoadingScreen";
+import ErrorScreen from "@/src/components/ErrorScreen";
+
 export default function RecipeDetail() {
   const { id } = useLocalSearchParams();
   const numId = Number(Array.isArray(id) ? id[0] : id)
-  const {data: recipe, isError, isPending} = useRecipeDetail(numId)
+  const {data: recipe, isError, error, isPending} = useRecipeDetail(numId)
   const tabs = ["Ingredients", "Equipment", "Instructions"]
   const [selected, setSelected] = useState(tabs[0])
   const equipment = recipe?.equipment ?? ["Unknown"]
   const ingredients = recipe?.ingredients
   const instructions = recipe?.directions
   const title = recipe?.title
+
+  if (isPending) {
+    return <LoadingScreen />
+  }
+  if (isError) {
+    return <ErrorScreen error={error.message}/>
+  }
+
   return (
     <SafeAreaView className="flex-1 bg-[rgb(28,29,33)]">
       <Pressable onPress={handleFindRecipes} className="self-start p-2 bg-[rgb(63,69,79)] ml-4 rounded-2xl"><ChevronLeft color={"white"}/></Pressable>
