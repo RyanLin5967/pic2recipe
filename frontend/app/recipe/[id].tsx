@@ -24,7 +24,7 @@ export default function RecipeDetail() {
   const title = recipe?.title
 
   if (isPending) {
-    return <LoadingScreen />
+    return <LoadingScreen message={"Recipe"}/>
   }
   if (isError) {
     return <ErrorScreen error={error.message}/>

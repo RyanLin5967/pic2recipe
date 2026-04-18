@@ -13,7 +13,7 @@ export default function Results(){
   const {data: recipes, isError, error, isPending} = useRecipeSearch(ingredients)
 
   if (isPending) {
-    return <LoadingScreen />
+    return <LoadingScreen message={"Recipes"}/>
   }
 
   if( isError){
@@ -25,7 +25,7 @@ export default function Results(){
       <ScrollView>
         <View className="flex flex-row">
           <Pressable onPress={() => router.push("/")} className="self-start p-2 bg-[rgb(63,69,79)] ml-4 rounded-2xl"><ChevronLeft color={"white"}/></Pressable>
-          <Text className="p-2 ml-4 text-white font-bold text-3xl">We Found 5 Matches</Text>
+          <Text className="p-2 ml-4 text-white font-bold text-3xl">We Found {recipes.length} Matches</Text>
         </View>
         {recipes?.map((recipe, index) => (
           <RecipeCard key={index} recipe={recipe} ingredients={ingredients}/>
