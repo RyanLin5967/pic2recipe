@@ -10,6 +10,7 @@ package
 full_dataset.csv
 recipe_embeddings.npy
 best_int8.tflite
+best_float16.tflite
 # C extensions
 *.so
 node_modules
