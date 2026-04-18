@@ -8,3 +8,12 @@ export interface Recipe {
   difficulty: string
   equipment: string[]
 }
+
+export type Detection = {
+  name: string
+  confidence: number
+  x1: number
+  y1: number
+  x2: number
+  y2: number
+}
