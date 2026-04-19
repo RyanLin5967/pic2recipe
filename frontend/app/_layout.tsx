@@ -13,6 +13,7 @@ export default function RootLayout() {
         <Stack screenOptions={{ contentStyle: { flex: 1 }, headerShown: false }}>
           <Stack.Screen name="(tabs)"/>
           <Stack.Screen name="recipe/[id]" />
+          <Stack.Screen name="confirm" />
         </Stack>
       </QueryClientProvider>
     </DatabaseProvider>

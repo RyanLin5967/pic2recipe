@@ -14,34 +14,52 @@ export function useIngredientDetection() {
   const shouldProcess = useMemo(() => Worklets.createSharedValue(false), [])
 
   const handleDetections = useCallback((rawOutput: number[]) => {
-    console.log("handleDetections called with output of length:", rawOutput.length)
-    const byClass = new Map<string, Detection>()
+  const P = 8400
+  const NUM_CLASSES = 120
+  const CONFIDENCE_THRESHOLD = 0.25  // lower threshold for TFLite
+  const byClass = new Map<string, Detection>()
 
-    for (let i = 0; i < 300; i++) {
-      const offset = i * 6
-      const confidence = rawOutput[offset + 4]
-      if (confidence > 0.5) {
-        const classId = Math.round(rawOutput[offset + 5])
-        const name = CLASS_NAMES[classId] || `Unknown(${classId})`
-        const pct = Math.round(confidence * 100)
-
-        const existing = byClass.get(name)
-        if (!existing || existing.confidence < pct) {
-          byClass.set(name, {
-            name,
-            confidence: pct,
-            x1: rawOutput[offset + 0],
-            y1: rawOutput[offset + 1],
-            x2: rawOutput[offset + 2],
-            y2: rawOutput[offset + 3],
-          })
-        }
+  for (let i = 0; i < P; i++) {
+    // Find highest class score (transposed: row * P + col)
+    let maxScore = 0
+    let maxClassId = 0
+    for (let c = 0; c < NUM_CLASSES; c++) {
+      const score = rawOutput[(4 + c) * P + i]
+      if (score > maxScore) {
+        maxScore = score
+        maxClassId = c
       }
     }
 
-    console.log("Parsed:", byClass.size, "unique classes")
-    latestDetections.current = Array.from(byClass.values())
-  }, [])
+    if (maxScore > CONFIDENCE_THRESHOLD) {
+      const cx = rawOutput[0 * P + i]
+      const cy = rawOutput[1 * P + i]
+      const w = rawOutput[2 * P + i]
+      const h = rawOutput[3 * P + i]
+
+      // Convert cxcywh to x1y1x2y2 (already normalized 0-1)
+      const x1 = cx - w / 2
+      const y1 = cy - h / 2
+      const x2 = cx + w / 2
+      const y2 = cy + h / 2
+
+      const name = CLASS_NAMES[maxClassId] || `Unknown(${maxClassId})`
+      const pct = Math.round(maxScore * 100)
+
+      const existing = byClass.get(name)
+      if (!existing || existing.confidence < pct) {
+        byClass.set(name, { name, confidence: pct, x1, y1, x2, y2 })
+      }
+    }
+  }
+
+  console.log("Parsed:", byClass.size, "unique classes")
+  if (byClass.size > 0) {
+    const top = Array.from(byClass.values()).sort((a, b) => b.confidence - a.confidence).slice(0, 3)
+    console.log("Top 3:", top.map(d => `${d.name}(${d.confidence}%)`))
+  }
+  latestDetections.current = Array.from(byClass.values())
+}, [])
 
   const onDetections = Worklets.createRunOnJS(handleDetections)
 
@@ -50,7 +68,6 @@ export function useIngredientDetection() {
     if (!shouldProcess.value || model.state !== "loaded") return
     shouldProcess.value = false
 
-    console.log("Running inference!")
     const resized = resize(frame, {
       scale: { width: 640, height: 640 },
       pixelFormat: "rgb",
@@ -64,7 +81,6 @@ export function useIngredientDetection() {
   }, [model, onDetections, shouldProcess])
 
   const triggerCapture = () => {
-    console.log("triggerCapture called, setting shouldProcess to true")
     shouldProcess.value = true
   }
 
