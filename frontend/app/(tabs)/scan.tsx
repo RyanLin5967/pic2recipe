@@ -1,40 +1,33 @@
-import { View, Text, Pressable } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { View, Text, Pressable, StyleSheet, ActivityIndicator } from "react-native"
+import { SafeAreaView } from "react-native-safe-area-context"
 import { router } from "expo-router"
 import { ChevronLeft, Circle } from "lucide-react-native"
-import { useCameraDevice, useCameraPermission, Camera, useFrameProcessor } from 'react-native-vision-camera'
-import NoCameraDeviceError from "@/src/components/NoCameraDeviceError";
-import PermissionsPage from "@/src/components/PermissionsPage";
-import { StyleSheet } from "react-native";
-import { useTensorflowModel } from "react-native-fast-tflite";
-import { useEffect, useCallback, useRef } from "react"
-import { useResizePlugin } from "vision-camera-resize-plugin";
-import { useSharedValue } from "react-native-reanimated";
-import { Worklets } from "react-native-worklets-core";
-import { CLASS_NAMES } from "@/src/constants/classNames";
-import LoadingScreen from "@/src/components/LoadingScreen";
-import { useIngredientDetection } from "@/src/hooks/useIngredientDetection";
+import { useCameraDevice, useCameraPermission, Camera } from "react-native-vision-camera"
+import { useRef, useState } from "react"
+import NoCameraDeviceError from "@/src/components/NoCameraDeviceError"
+import PermissionsPage from "@/src/components/PermissionsPage"
+import { identifyIngredients } from "@/src/services/vision"
+import { File } from "expo-file-system/next"
 
 export default function ScanScreen() {
   const { hasPermission } = useCameraPermission()
   const device = useCameraDevice("back")
   const cameraRef = useRef<Camera>(null)
-  const { modelState, frameProcessor, triggerCapture, latestDetections } = useIngredientDetection()
+  const [isProcessing, setIsProcessing] = useState(false)
 
+  //should show loading screen??
   const handleCapture = async () => {
-    if (!cameraRef.current || modelState !== "loaded") {
-      return
-    }
-    latestDetections.current = []
-    triggerCapture()
+  if (!cameraRef.current || isProcessing) return
+  setIsProcessing(true)
+
+  try {
     const photo = await cameraRef.current.takePhoto()
-    const maxWait = 5000
-    const pollInterval = 50
-    let waited = 0
-    while (latestDetections.current.length === 0 && waited < maxWait) {
-      await new Promise((resolve) => setTimeout(resolve, pollInterval))
-      waited += pollInterval
-    }
+
+const file = new File(`file://${photo.path}`)
+  const base64 = await file.base64()
+
+    const detections = await identifyIngredients(base64)
+    console.log("Detected:", detections)
 
     router.push({
       pathname: "/confirm",
@@ -42,29 +35,50 @@ export default function ScanScreen() {
         photoPath: photo.path,
         photoWidth: String(photo.width),
         photoHeight: String(photo.height),
-        detections: JSON.stringify(latestDetections.current),
+        detections: JSON.stringify(detections),
       },
     })
+  } catch (err) {
+    console.error("Capture failed:", err)
+  } finally {
+    setIsProcessing(false)
   }
-  
-  if (!hasPermission) return <PermissionsPage />;
-  if (device == null) return <NoCameraDeviceError />;
-  if (modelState !== "loaded") return <LoadingScreen message={"Model"}/>;
-  
+}
+
+  if (!hasPermission) return <PermissionsPage />
+  if (device == null) return <NoCameraDeviceError />
+
   return (
     <SafeAreaView className="flex-1 bg-[rgb(28,29,33)]">
-      <Camera device={device} isActive={true} style={StyleSheet.absoluteFill} frameProcessor={frameProcessor} ref={cameraRef} photo={true}/>
-        <View className="flex flex-row">
-          <Pressable onPress={() => router.push("/")} className="p-2 bg-[rgb(63,69,79)] ml-2 rounded-2xl"><ChevronLeft color={"white"}/></Pressable>
-          <View className="absolute left-0 right-0 items-center">
-            <Text className="flex-1 text-white font-bold text-center p-2.5 px-4 rounded-2xl bg-[rgb(63,69,79)]">3 Items Scanned</Text>
-          </View>
-          <View className="p-2 ml-2 opacity-0">
-            <ChevronLeft color={"white"} />
-          </View>
+      <Camera
+        ref={cameraRef}
+        device={device}
+        isActive={true}
+        style={StyleSheet.absoluteFill}
+        photo={true}
+      />
+      <View className="flex flex-row">
+        <Pressable
+          onPress={() => router.push("/")}
+          className="p-2 bg-[rgb(63,69,79)] ml-2 rounded-2xl"
+        >
+          <ChevronLeft color={"white"} />
+        </Pressable>
+      </View>
+      {isProcessing && (
+        <View className="absolute inset-0 items-center justify-center bg-black/50">
+          <ActivityIndicator size="large" color="rgb(237,84,19)" />
+          <Text className="text-white mt-4 text-lg">Identifying ingredients...</Text>
         </View>
-        <Text className="flex mt-auto text-center text-white">Point camera at ingredients</Text>
-        <Pressable onPress={handleCapture} className="absolute bottom-10 self-center bg-white rounded-full p-2"><Circle color="rgb(237,84,19)" fill="rgb(237,84,19)" size={60}></Circle></Pressable>
+      )}
+      <Pressable
+        onPress={handleCapture}
+        disabled={isProcessing}
+        className="absolute bottom-10 self-center bg-white rounded-full p-2"
+        style={{ opacity: isProcessing ? 0.5 : 1 }}
+      >
+        <Circle color="rgb(237,84,19)" fill="rgb(237,84,19)" size={60} />
+      </Pressable>
     </SafeAreaView>
-  );
+  )
 }

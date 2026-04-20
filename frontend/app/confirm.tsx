@@ -3,7 +3,7 @@ import { SafeAreaView } from "react-native-safe-area-context"
 import { useLocalSearchParams, router } from "expo-router"
 import Svg, { Rect, Text as SvgText } from "react-native-svg"
 import React from "react"
-import { Detection } from "@/src/types"
+import { VisionDetection } from "@/src/services/vision"
 
 export default function Confirm() {
   const {
@@ -18,18 +18,17 @@ export default function Confirm() {
     detections: string
   }>()
 
-  const detections = JSON.parse(detectionsStr) as Detection[]
-  
+  const detections = JSON.parse(detectionsStr) as VisionDetection[]
   const photoW = Number(photoWidth)
-const photoH = Number(photoHeight)
-const isLandscape = photoW > photoH
+  const photoH = Number(photoHeight)
+  const isLandscape = photoW > photoH
 
-const DISPLAY_WIDTH = 360
-const DISPLAY_HEIGHT = isLandscape
+  const DISPLAY_WIDTH = 360
+  const DISPLAY_HEIGHT = isLandscape
   ? (photoW / photoH) * DISPLAY_WIDTH
   : (photoH / photoW) * DISPLAY_WIDTH
+
   const handleConfirm = async () => {
-    //have to add ingredient to db
     router.push("/")
   }
 
@@ -37,7 +36,7 @@ const DISPLAY_HEIGHT = isLandscape
     <SafeAreaView className="flex-1 bg-[rgb(28,29,33)]">
       <ScrollView contentContainerStyle={{ alignItems: "center", padding: 16 }}>
         <Text className="text-white text-2xl font-bold mb-4">
-          Detected Ingredients
+          Found {detections.length} Ingredient{detections.length !== 1 ? "s" : ""}
         </Text>
 
         <View style={{ width: DISPLAY_WIDTH, height: DISPLAY_HEIGHT }}>
@@ -51,20 +50,10 @@ const DISPLAY_HEIGHT = isLandscape
             height={DISPLAY_HEIGHT}
           >
             {detections.map((d, i) => {
-  let x1, y1, x2, y2
-
-  if (isLandscape) {
-    // Rotate coords 90° CW: landscape → portrait
-    x1 = (1 - d.y2) * DISPLAY_WIDTH
-    y1 = d.x1 * DISPLAY_HEIGHT
-    x2 = (1 - d.y1) * DISPLAY_WIDTH
-    y2 = d.x2 * DISPLAY_HEIGHT
-  } else {
-    x1 = d.x1 * DISPLAY_WIDTH
-    y1 = d.y1 * DISPLAY_HEIGHT
-    x2 = d.x2 * DISPLAY_WIDTH
-    y2 = d.y2 * DISPLAY_HEIGHT
-  }
+  const x1 = (d.box_2d[1] / 1000) * DISPLAY_WIDTH
+  const y1 = (d.box_2d[0] / 1000) * DISPLAY_HEIGHT
+  const x2 = (d.box_2d[3] / 1000) * DISPLAY_WIDTH
+  const y2 = (d.box_2d[2] / 1000) * DISPLAY_HEIGHT
 
   return (
     <React.Fragment key={i}>
@@ -80,11 +69,11 @@ const DISPLAY_HEIGHT = isLandscape
       <SvgText
         x={x1}
         y={y1 - 6}
-        fill="rgb(237,84,18)"
+        fill="rgb(237,84,19)"
         fontSize={14}
         fontWeight="bold"
       >
-        {d.name} ({d.confidence}%)
+        {d.label}
       </SvgText>
     </React.Fragment>
   )
@@ -96,12 +85,9 @@ const DISPLAY_HEIGHT = isLandscape
           {detections.map((d, i) => (
             <View
               key={i}
-              className="flex-row justify-between bg-[rgb(59,61,69)] p-4 mb-2 rounded-2xl"
+              className="flex-row items-center bg-[rgb(59,61,69)] p-4 mb-2 rounded-2xl"
             >
-              <Text className="text-white text-lg font-bold">{d.name}</Text>
-              <Text className="text-[rgb(237,84,19)] font-bold">
-                {d.confidence}%
-              </Text>
+              <Text className="text-white text-lg font-bold capitalize">{d.label}</Text>
             </View>
           ))}
         </View>
