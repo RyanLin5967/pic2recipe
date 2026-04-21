@@ -4,6 +4,7 @@ import { useLocalSearchParams, router } from "expo-router"
 import Svg, { Rect, Text as SvgText } from "react-native-svg"
 import React from "react"
 import { VisionDetection } from "@/src/services/vision"
+import { addIngredient } from "@/src/database/operations"
 
 export default function Confirm() {
   const {
@@ -29,6 +30,10 @@ export default function Confirm() {
   : (photoH / photoW) * DISPLAY_WIDTH
 
   const handleConfirm = async () => {
+    const detections = JSON.parse(detectionsStr) as VisionDetection[]
+    for (let i = 0; i<detections.length; i++){
+      await addIngredient(detections[i]["label"])
+    }
     router.push("/")
   }
 

@@ -21,12 +21,13 @@ export async function identifyIngredients(base64Image: string): Promise<VisionDe
             }
           },
           {
-            text: 'Detect all food ingredients in this image. Return a JSON list where each item has "box_2d" with [ymin, xmin, ymax, xmax] normalized to 0-1000, and "label" with the ingredient name. Example: [{"box_2d": [100, 200, 500, 600], "label": "apple"}]'
+            text: 'Detect all food ingredients in this image. Return a JSON list where each item has "box_2d" with [ymin, xmin, ymax, xmax] normalized to 0-1000, and "label" with the ingredient name. Example: [{"box_2d": [100, 200, 500, 600], "label": "apple"}]. If there are no food ingredients, simply return an empty array. Do not say "I did not find any food ingredients in this image."'
           }
         ]
       }],
       generationConfig: {
         temperature: 0.5,
+        responseMimeType: "application/json",
       }
     })
   })
@@ -37,7 +38,10 @@ export async function identifyIngredients(base64Image: string): Promise<VisionDe
 
   const text = data.candidates?.[0]?.content?.parts?.[0]?.text || "[]"
     console.log("Gemini text:", text)
-
-  const cleaned = text.replace(/```json\n?|```\n?/g, "").trim()
-  return JSON.parse(cleaned)
+  try {
+    const cleaned = text.replace(/```json\n?|```\n?/g, "").trim()
+    return JSON.parse(cleaned)
+  } catch {
+    return []
+  }
 }

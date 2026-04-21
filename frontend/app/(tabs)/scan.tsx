@@ -15,7 +15,6 @@ export default function ScanScreen() {
   const cameraRef = useRef<Camera>(null)
   const [isProcessing, setIsProcessing] = useState(false)
 
-  //should show loading screen??
   const handleCapture = async () => {
   if (!cameraRef.current || isProcessing) return
   setIsProcessing(true)
