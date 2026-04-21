@@ -8,6 +8,7 @@ import { useState } from 'react'
 import { Plus } from 'lucide-react-native'
 import { addIngredient } from "@/src/database/operations";
 import { getIngredients } from "@/src/database/operations";
+import Header from "@/src/components/Header";
 
 export const handleFindRecipes = async () => {
     let ingredients = await getIngredients()
@@ -28,7 +29,7 @@ export default function HomeScreen() {
   return (
     <SafeAreaView edges={['top']}className="flex-1 bg-[rgb(28,29,33)]">
       <View className="flex-1 bg-[rgb(28,29,33)]">
-        <Text className="text-4xl font-bold text-white text-center mt-4">Ready to Cook?</Text>
+        <Header />
         <ScrollView><IngredientList /></ScrollView>
          <Pressable onPress={() => setModalVisible(true)} className="absolute bottom-24 right-6 bg-[rgb(237,84,19)] rounded-full p-4">
             <Plus color="rgb(28,29,33)" size={28} />

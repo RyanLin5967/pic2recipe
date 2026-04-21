@@ -39,7 +39,7 @@ export default function RecipeDetail() {
       </View>
       <View className="flex flex-row">
         <Text className="ml-5 text-[rgb(167,167,167)]">⏱️ {recipe?.cook_time_minutes ?? "Unknown"} min</Text>
-        <View className="ml-5 px-2 bg-[rgb(37,72,66)] rounded-2xl"><Text className="text-[rgb(43,201,154)] font-bold">{recipe?.difficulty ?? "Unknown"}</Text></View>
+        <View className={recipe?.difficulty === "Easy"? "ml-5 px-2 bg-[rgb(37,72,66)] rounded-2xl": recipe?.difficulty === "Medium"? "ml-5 px-2 bg-[rgb(72,58,30)] rounded-2xl": "ml-5 px-2 bg-[rgb(72,37,37)] rounded-2xl"}><Text className={recipe?.difficulty === "Easy"? "text-[rgb(43,201,154)] font-bold": recipe?.difficulty === "Medium"? "text-[rgb(223,133,31)] font-bold": "text-[rgb(212,50,50)] font-bold"}>{recipe?.difficulty ?? "Unknown"}</Text></View>
       </View>
       <View className="flex flex-row">
         {tabs.map((tab, index) => (
