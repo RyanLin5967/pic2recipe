@@ -1,6 +1,6 @@
 import axios from 'axios'
 import {Recipe} from '@/src/types/index'
-const BASE_URL =  "https://nonbotanic-cathleen-dramaturgically.ngrok-free.dev"
+const BASE_URL =  "https://api.ryanlin.dev"
 
 export async function getRecipe(ingredients: string[]){
     const response = await axios.post<Recipe[]>(
