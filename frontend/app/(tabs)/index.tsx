@@ -12,9 +12,14 @@ import Header from "@/src/components/Header";
 
 export const handleFindRecipes = async () => {
     let ingredients = await getIngredients()
-    router.push({pathname: "/results", params: {ingredients: JSON.stringify(ingredients)}})
+    if(ingredients.length > 0){
+      router.push({pathname: "/results", params: {ingredients: JSON.stringify(ingredients)}})
+    }else {
+      router.push({pathname: "/results", params: {ingredients: []}})
+    }
+    
 }
-
+// NEED TO HANDLE EDGE CASE OF USER NOT SUBMITTING ANY INGREDIENTS AND PRESSING FIND RECIPES BUTTON
 export default function HomeScreen() {
   const [modalVisible, setModalVisible] = useState(false)
   const [input, setInput] = useState("");

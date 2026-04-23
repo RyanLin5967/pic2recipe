@@ -6,8 +6,6 @@ export type VisionDetection = {
 }
 
 export async function identifyIngredients(base64Image: string): Promise<VisionDetection[]> {
-    console.log("Sending image to Gemini, base64 length:", base64Image.length)
-
   const response = await fetch(GEMINI_URL, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -32,12 +30,9 @@ export async function identifyIngredients(base64Image: string): Promise<VisionDe
     })
   })
   
-
   const data = await response.json()
-    console.log("Gemini raw response:", JSON.stringify(data).slice(0, 500))
-
   const text = data.candidates?.[0]?.content?.parts?.[0]?.text || "[]"
-    console.log("Gemini text:", text)
+
   try {
     const cleaned = text.replace(/```json\n?|```\n?/g, "").trim()
     return JSON.parse(cleaned)

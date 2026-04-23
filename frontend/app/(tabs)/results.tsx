@@ -12,11 +12,16 @@ export default function Results(){
   const ingredients = ingredientsStr ? JSON.parse(ingredientsStr) as string[]: []
   const {data: recipes, isError, error, isPending} = useRecipeSearch(ingredients)
 
+
+  if (ingredients.length == 0){
+    return <ErrorScreen error={"Add some ingredients first!"}/>
+  }
+
   if (isPending) {
     return <LoadingScreen message={"Recipes"}/>
   }
 
-  if( isError){
+  if(isError){
     return <ErrorScreen error={error.message}/>
   }
 

@@ -104,12 +104,9 @@ export default function Confirm() {
           >
             <Text className="text-white font-bold">Retake</Text>
           </Pressable>
-          <Pressable
-            onPress={handleConfirm}
-            className="bg-[rgb(237,84,19)] px-6 py-3 rounded-2xl"
-          >
+          {detections.length > 0 ? <Pressable onPress={handleConfirm} className="bg-[rgb(237,84,19)] px-6 py-3 rounded-2xl">
             <Text className="text-white font-bold">Add to Pantry</Text>
-          </Pressable>
+          </Pressable> : <></>}
         </View>
       </ScrollView>
     </SafeAreaView>
