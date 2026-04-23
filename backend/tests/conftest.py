@@ -4,12 +4,12 @@ import pytest
 from unittest.mock import MagicMock, patch
 from ml import ml_model
 from config import settings
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
 from api.dependencies import get_session
 from repositories.models.recipe import Recipe, Base
 
-engine = create_engine(f"postgresql://{settings.POSTGRES_USER}:{settings.POSTGRES_PASSWORD}@{settings.POSTGRES_HOST}:{settings.POSTGRES_PORT}/{settings.POSTGRES_DB}_test")
+engine = create_engine(f"postgresql://{settings.POSTGRES_USER}:{settings.POSTGRES_PASSWORD}@localhost:5434/pic2recipe_test")
 TestingSessionLocal = sessionmaker(bind=engine)
 
 @pytest.fixture
@@ -46,6 +46,9 @@ def mock_repo():
     
 @pytest.fixture(scope="session", autouse=True)
 def setup_test_db():
+    with engine.connect() as conn:
+        conn.execute(text("CREATE EXTENSION IF NOT EXISTS vector"))
+        conn.commit()
     Base.metadata.create_all(bind=engine)
     yield
     Base.metadata.drop_all(bind=engine)
