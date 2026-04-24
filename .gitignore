@@ -19,8 +19,7 @@ node_modules
 .expo
 pg_data/
 # Distribution / packaging
-package.json
-package-lock.json
+
 .Python
 build/
 develop-eggs/
