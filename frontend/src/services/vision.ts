@@ -1,9 +1,6 @@
+import { VisionDetection } from "../types"
 const GEMINI_API_KEY = process.env.EXPO_PUBLIC_GEMINI_API_KEY
 const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key=${GEMINI_API_KEY}`
-export type VisionDetection = {
-  label: string
-  box_2d: [number, number, number, number]  // [ymin, xmin, ymax, xmax] 0-1000
-}
 
 export async function identifyIngredients(base64Image: string): Promise<VisionDetection[]> {
   const response = await fetch(GEMINI_URL, {

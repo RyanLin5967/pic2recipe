@@ -17,3 +17,7 @@ export type Detection = {
   x2: number
   y2: number
 }
+export type VisionDetection = {
+  label: string
+  box_2d: [number, number, number, number]
+}

@@ -3,7 +3,7 @@ import { SafeAreaView } from "react-native-safe-area-context"
 import { useLocalSearchParams, router } from "expo-router"
 import Svg, { Rect, Text as SvgText } from "react-native-svg"
 import React from "react"
-import { VisionDetection } from "@/src/services/vision"
+import { VisionDetection } from "@/src/types/index"
 import { addIngredient } from "@/src/database/operations"
 
 export default function Confirm() {
