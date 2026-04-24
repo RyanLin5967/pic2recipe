@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "frontend",
+    "name": "pic2recipe",
     "jsEngine": "hermes",
     "slug": "frontend",
     "version": "1.0.0",
@@ -8,6 +8,7 @@
     "scheme": "frontend",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
+    "icon": "./assets/icon.png",
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
@@ -15,6 +16,12 @@
       }
     },
     "android": {
+      "android": {
+        "adaptiveIcon": {
+          "foregroundImage": "./assets/adaptive-icon.png",
+          "backgroundColor": "#ffffff"
+        }
+      },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
       "package": "com.anonymous.frontend",
@@ -58,6 +65,7 @@
       "eas": {
         "projectId": "7e775f38-77c7-444f-a165-edd9dc8ee050"
       }
-    }
+    },
+    "owner": "ryanlin5967"
   }
 }
