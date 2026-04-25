@@ -1,9 +1,7 @@
 import { View, Text, Pressable, Modal, TextInput, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import IngredientItem from "@/src/components/IngredientItem";
-import {router} from "expo-router"
+import { router } from "expo-router"
 import IngredientList from '@/src/components/IngredientList'
-import Ingredient from "@/src/database/models/Ingredient";
 import { useState } from 'react'
 import { Plus } from 'lucide-react-native'
 import { addIngredient } from "@/src/database/operations";
@@ -19,7 +17,6 @@ export const handleFindRecipes = async () => {
     }
     
 }
-// NEED TO HANDLE EDGE CASE OF USER NOT SUBMITTING ANY INGREDIENTS AND PRESSING FIND RECIPES BUTTON
 export default function HomeScreen() {
   const [modalVisible, setModalVisible] = useState(false)
   const [input, setInput] = useState("");

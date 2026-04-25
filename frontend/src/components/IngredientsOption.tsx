@@ -1,5 +1,5 @@
 import { View, Text, ScrollView } from "react-native";
-import {Dot} from "lucide-react-native"
+import { Dot } from "lucide-react-native"
 
 export default function IngredientsOption({ingredients}: {ingredients: string[]}){
   return (

@@ -1,4 +1,3 @@
-import pytest
 from repositories.recipe_repo import get_from_id, get_recipe
 from repositories.models.recipe import Recipe
 

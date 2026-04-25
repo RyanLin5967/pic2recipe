@@ -1,7 +1,6 @@
 import { withObservables } from "@nozbe/watermelondb/react";
 import { database } from "@/src/database/index"
 import Ingredient from "../database/models/Ingredient";
-import IngredientItem from "./IngredientItem"
 import { View, Text } from 'react-native'
 
 function Header({ingredients}: {ingredients: Ingredient[]}){

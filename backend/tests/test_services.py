@@ -1,5 +1,3 @@
-# mock repository, model
-import pytest
 from services.recommendation import get_recommendations
 def test_service(mock_repo, mock_transformer, db_session):
     results = get_recommendations(["chicken", "pizza"], mock_transformer, db_session)

@@ -1,9 +1,9 @@
 import { View, Text, Pressable, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import RecipeCard from "@/src/components/RecipeCard";
-import {router, useLocalSearchParams} from "expo-router"
-import {ChevronLeft} from "lucide-react-native"
-import {useRecipeSearch} from '@/src/hooks/useRecipeSearch'
+import { router, useLocalSearchParams } from "expo-router"
+import { ChevronLeft } from "lucide-react-native"
+import { useRecipeSearch } from '@/src/hooks/useRecipeSearch'
 import LoadingScreen from "@/src/components/LoadingScreen";
 import ErrorScreen from "@/src/components/ErrorScreen";
 

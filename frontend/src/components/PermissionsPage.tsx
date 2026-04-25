@@ -1,6 +1,6 @@
 import { View, Text, Pressable } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useCameraDevice, useCameraPermission, Camera } from 'react-native-vision-camera'
+import { useCameraPermission } from 'react-native-vision-camera'
 import { Linking } from 'react-native'
 
 export default function PermissionsPage(){

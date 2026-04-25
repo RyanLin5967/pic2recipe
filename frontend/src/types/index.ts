@@ -9,14 +9,6 @@ export interface Recipe {
   equipment: string[]
 }
 
-export type Detection = {
-  name: string
-  confidence: number
-  x1: number
-  y1: number
-  x2: number
-  y2: number
-}
 export type VisionDetection = {
   label: string
   box_2d: [number, number, number, number]

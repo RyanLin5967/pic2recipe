@@ -1,8 +1,7 @@
-import { use, useState } from "react";
+import { useState } from "react";
 import { View, Text, Pressable } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { router } from "expo-router"
 import { ChevronLeft } from "lucide-react-native";
 import IngredientsOption from "@/src/components/IngredientsOption";
 import EquipmentOption from "@/src/components/EquipmentOption";

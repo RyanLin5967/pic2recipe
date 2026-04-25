@@ -22,11 +22,10 @@ export default function ScanScreen() {
   try {
     const photo = await cameraRef.current.takePhoto()
 
-const file = new File(`file://${photo.path}`)
-  const base64 = await file.base64()
+    const file = new File(`file://${photo.path}`)
+    const base64 = await file.base64()
 
     const detections = await identifyIngredients(base64)
-    console.log("Detected:", detections)
 
     router.push({
       pathname: "/confirm",
@@ -37,12 +36,12 @@ const file = new File(`file://${photo.path}`)
         detections: JSON.stringify(detections),
       },
     })
-  } catch (err) {
-    console.error("Capture failed:", err)
-  } finally {
-    setIsProcessing(false)
+    } catch (err) {
+      console.error("Capture failed:", err)
+    } finally {
+      setIsProcessing(false)
+    }
   }
-}
 
   if (!hasPermission) return <PermissionsPage />
   if (device == null) return <NoCameraDeviceError />

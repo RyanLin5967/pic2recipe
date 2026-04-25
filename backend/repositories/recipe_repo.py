@@ -1,4 +1,3 @@
-# takes a vector + db session, gets most similar embeddings, returns results
 from repositories.models.recipe import Recipe
 from sqlalchemy import select
 

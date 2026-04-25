@@ -1,4 +1,3 @@
-import pytest
 from schemas.recipe import IngredientsRequest, RecipeResponse, IdResponse
 from repositories.models.recipe import Recipe
 
@@ -16,7 +15,6 @@ def test_recipe_valid(test_client, mock_transformer, db_session):
     request_data = IngredientsRequest(ingredients=["cheese", "pizza"])
     response = test_client.post("/recipe",  json=request_data.model_dump())
     recipes = response.json()
-    # check shape of data
     validated_recipe = RecipeResponse.model_validate(recipes[0])
     assert response.status_code == 200
     assert 0 <= validated_recipe.similarity <= 1

@@ -55,34 +55,34 @@ export default function Confirm() {
             height={DISPLAY_HEIGHT}
           >
             {detections.map((d, i) => {
-  const x1 = (d.box_2d[1] / 1000) * DISPLAY_WIDTH
-  const y1 = (d.box_2d[0] / 1000) * DISPLAY_HEIGHT
-  const x2 = (d.box_2d[3] / 1000) * DISPLAY_WIDTH
-  const y2 = (d.box_2d[2] / 1000) * DISPLAY_HEIGHT
+            const x1 = (d.box_2d[1] / 1000) * DISPLAY_WIDTH
+            const y1 = (d.box_2d[0] / 1000) * DISPLAY_HEIGHT
+            const x2 = (d.box_2d[3] / 1000) * DISPLAY_WIDTH
+            const y2 = (d.box_2d[2] / 1000) * DISPLAY_HEIGHT
 
-  return (
-    <React.Fragment key={i}>
-      <Rect
-        x={x1}
-        y={y1}
-        width={x2 - x1}
-        height={y2 - y1}
-        stroke="rgb(237,84,19)"
-        strokeWidth={3}
-        fill="transparent"
-      />
-      <SvgText
-        x={x1}
-        y={y1 - 6}
-        fill="rgb(237,84,19)"
-        fontSize={14}
-        fontWeight="bold"
-      >
-        {d.label}
-      </SvgText>
-    </React.Fragment>
-  )
-})}
+            return (
+              <React.Fragment key={i}>
+                <Rect
+                  x={x1}
+                  y={y1}
+                  width={x2 - x1}
+                  height={y2 - y1}
+                  stroke="rgb(237,84,19)"
+                  strokeWidth={3}
+                  fill="transparent"
+                />
+                <SvgText
+                  x={x1}
+                  y={y1 - 6}
+                  fill="rgb(237,84,19)"
+                  fontSize={14}
+                  fontWeight="bold"
+                >
+                  {d.label}
+                </SvgText>
+              </React.Fragment>
+            )
+          })}
           </Svg>
         </View>
 

@@ -1,14 +1,14 @@
 import { View, Text, Pressable } from "react-native"
 import { router } from "expo-router"
-import {Recipe} from "@/src/types/index"
+import { Recipe } from "@/src/types/index"
 
 export function usesWhatIngredients(recipe: Recipe, ingredients: string[]) {
-    return "Uses your: " + ingredients
-      .filter(ing => 
-        recipe.ingredients.some(ri => ri.trim().toLowerCase().includes(ing.trim().toLowerCase()))
-      )
-      .join(", ")
-  }
+  return "Uses your: " + ingredients
+    .filter(ing => 
+      recipe.ingredients.some(ri => ri.trim().toLowerCase().includes(ing.trim().toLowerCase()))
+    )
+    .join(", ")
+}
 export default function RecipeCard({recipe, ingredients}: {recipe: Recipe, ingredients: string[]}){
   return (
     <View className="flex bg-[rgb(42,44,50)] m-2 mx-8 border border-[rgb(57,59,67)] rounded-3xl">

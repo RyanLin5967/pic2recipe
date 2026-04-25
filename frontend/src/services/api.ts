@@ -1,5 +1,5 @@
 import axios from 'axios'
-import {Recipe} from '@/src/types/index'
+import { Recipe } from '@/src/types/index'
 const BASE_URL =  "https://api.ryanlin.dev"
 
 export async function getRecipe(ingredients: string[]){
