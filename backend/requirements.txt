@@ -10,3 +10,5 @@ pydantic
 sentence_transformers
 fastapi[standard]
 pgvector
+sentry-sdk[fastapi]
+sentry-sdk

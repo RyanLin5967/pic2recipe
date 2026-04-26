@@ -7,6 +7,8 @@ class Settings(BaseSettings):
     POSTGRES_PORT: int
     POSTGRES_DB: str
     MODEL_NAME: str
+    SENTRY_DSN: str
+    SENTRY_ENVIRONMENT: str
 
     model_config = SettingsConfigDict(env_file="../.env")
 
