@@ -55,14 +55,17 @@ export default function ScanScreen() {
         style={StyleSheet.absoluteFill}
         photo={true}
       />
-      <View className="flex flex-row">
-        <Pressable
-          onPress={() => router.push("/")}
-          className="p-2 bg-[rgb(63,69,79)] ml-2 rounded-2xl"
-        >
-          <ChevronLeft color={"white"} />
-        </Pressable>
-      </View>
+        <View className="flex flex-row">
+          <Pressable
+            onPress={() => router.push("/")}
+            className="p-2 bg-[rgb(63,69,79)] ml-2 rounded-2xl"
+          >
+            <ChevronLeft color={"white"} />
+          </Pressable>
+          <View className="flex bg-[rgb(63,69,79)] items-center justify-center text-center ml-10 p-3 rounded-2xl">
+            <Text className="text-white text-center font-bold">Scan physical ingredients or a receipt</Text>
+          </View>
+        </View>
       {isProcessing && (
         <View className="absolute inset-0 items-center justify-center bg-black/50">
           <ActivityIndicator size="large" color="rgb(237,84,19)" />
