@@ -7,6 +7,7 @@ import { Plus } from 'lucide-react-native'
 import { addIngredient } from "@/src/database/operations";
 import { getIngredients } from "@/src/database/operations";
 import Header from "@/src/components/Header";
+import ErrorScreen from "@/src/components/ErrorScreen";
 
 export const handleFindRecipes = async () => {
     let ingredients = await getIngredients()
@@ -20,14 +21,21 @@ export const handleFindRecipes = async () => {
 export default function HomeScreen() {
   const [modalVisible, setModalVisible] = useState(false)
   const [input, setInput] = useState("");
+  const [error, setError] = useState(false)
+
 
   const handleAdd = async () => {
     if (!input.trim()) return;
-    await addIngredient(input.trim());
     setInput("");
     setModalVisible(false);
+    try {
+      await addIngredient(input.trim());
+    } catch (err: any){
+      setError(true)
+    }
   };
-
+  
+  if (error == true) return <ErrorScreen error={"Cannot add duplicate ingredients!"}/>
   return (
     <SafeAreaView edges={['top']}className="flex-1 bg-[rgb(28,29,33)]">
       <View className="flex-1 bg-[rgb(28,29,33)]">
@@ -36,8 +44,8 @@ export default function HomeScreen() {
          <Pressable onPress={() => setModalVisible(true)} className="absolute bottom-24 right-6 bg-[rgb(237,84,19)] rounded-full p-4">
             <Plus color="rgb(28,29,33)" size={28} />
           </Pressable>
-        <Pressable onPress={handleFindRecipes}className="absolute bottom-4 left-10 right-10 bg-[rgb(237,84,19)] rounded-2xl">
-            <Text className="p-4 text-center text-[rgb(28,29,33)] text-xl font-bold ">Find Recipes</Text>
+        <Pressable onPress={handleFindRecipes}className="absolute bottom-4 left-10 right-10 bg-[rgb(237,84,19)] rounded-2xl mx-10">
+            <Text className="p-4 text-center text-[rgb(28,29,33)] text-xl font-bold">Find Recipes</Text>
         </Pressable>
       </View>
       <Modal 

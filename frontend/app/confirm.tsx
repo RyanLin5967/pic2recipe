@@ -5,6 +5,8 @@ import Svg, { Rect, Text as SvgText } from "react-native-svg"
 import React from "react"
 import { VisionDetection } from "@/src/types/index"
 import { addIngredient } from "@/src/database/operations"
+import ErrorScreen from "@/src/components/ErrorScreen"
+import { useState } from "react"
 
 export default function Confirm() {
   const {
@@ -19,6 +21,8 @@ export default function Confirm() {
     detections: string
   }>()
 
+  const [error, setError] = useState(false)
+
   const detections = JSON.parse(detectionsStr) as VisionDetection[]
   const photoW = Number(photoWidth)
   const photoH = Number(photoHeight)
@@ -31,12 +35,18 @@ export default function Confirm() {
 
   const handleConfirm = async () => {
     const detections = JSON.parse(detectionsStr) as VisionDetection[]
-    for (let i = 0; i<detections.length; i++){
-      await addIngredient(detections[i]["label"])
-    }
     router.push("/")
+    try {
+      for (let i = 0; i<detections.length; i++){
+        await addIngredient(detections[i]["label"])
+      }
+    }catch (err: any){
+      setError(true)
+    }
+    
   }
 
+  if(error == true) return <ErrorScreen error={"Cannot add duplicate ingredients!"}/>
   return (
     <SafeAreaView className="flex-1 bg-[rgb(28,29,33)]">
       <ScrollView contentContainerStyle={{ alignItems: "center", padding: 16 }}>
