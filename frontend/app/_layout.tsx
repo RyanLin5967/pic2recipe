@@ -1,12 +1,31 @@
-import { Stack } from "expo-router";
+import { Stack, useNavigationContainerRef } from "expo-router";
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { DatabaseProvider } from '@nozbe/watermelondb/DatabaseProvider'
 import { database } from '@/src/database'
+import * as Sentry from "@sentry/react-native";
 import "../global.css";
+import { useEffect } from "react";
 
 const queryClient = new QueryClient()
 
-export default function RootLayout() {
+Sentry.init({
+  dsn: process.env.EXPO_PUBLIC_SENTRY_DSN,
+  debug: __DEV__,
+  tracesSampleRate: 1.0,
+  integrations: [
+    Sentry.reactNavigationIntegration(),
+  ]
+});
+
+export default Sentry.wrap(function RootLayout() {
+
+  const navigationRef = useNavigationContainerRef()
+
+  useEffect(() => {
+    if (navigationRef) {
+      Sentry.reactNavigationIntegration().registerNavigationContainer(navigationRef);
+    }
+  }, [navigationRef])
   return (
     <DatabaseProvider database={database}>
       <QueryClientProvider client={queryClient}>
@@ -18,4 +37,4 @@ export default function RootLayout() {
       </QueryClientProvider>
     </DatabaseProvider>
   );
-}
+});

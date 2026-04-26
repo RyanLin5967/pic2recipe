@@ -3,7 +3,7 @@
     "name": "pic2recipe",
     "jsEngine": "hermes",
     "slug": "frontend",
-    "version": "1.0.0",
+    "version": "1.0.3",
     "orientation": "portrait",
     "scheme": "frontend",
     "userInterfaceStyle": "automatic",
@@ -53,6 +53,14 @@
         "react-native-vision-camera",
         {
           "cameraPermissionText": "pic2recipe needs access to your Camera."
+        }
+      ],
+      [
+        "@sentry/react-native/expo",
+        {
+          "url": "https://sentry.io/",
+          "organization": "ryan-lin",
+          "project": "pic2recipe-frontend"
         }
       ]
     ],
