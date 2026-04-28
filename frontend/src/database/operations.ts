@@ -1,5 +1,7 @@
 import { database } from "./index"
 import Ingredient from "./models/Ingredient"
+import { Recipe } from "../types"
+import Favorite from "./models/Favorite"
 
 export async function addIngredient(title: string){
     if (await isExistingIngredient(title)){
@@ -28,4 +30,35 @@ export async function getIngredients(){
 async function isExistingIngredient(ingredient: string): Promise<boolean>{
     const allIng = await getIngredients()
     return allIng.some(ing => ing.toLowerCase().trim() === ingredient.toLowerCase().trim())
+}
+
+export async function addFavorite(recipe: Recipe){
+    if (await isFavorite(recipe.id)) return
+    await database.write(async () => {
+        await database.get<Favorite>("favorites").create(fav => {
+            fav.recipeId = recipe.id
+            fav.title = recipe.title
+            fav.ingredientsJson = JSON.stringify(recipe.ingredients)
+            fav.directionsJson = JSON.stringify(recipe.directions)
+            fav.similarity = recipe.similarity
+            fav.cookTimeMinutes = recipe.cook_time_minutes
+            fav.difficulty = recipe.difficulty
+            fav.equipmentJson = JSON.stringify(recipe.equipment)
+        })
+    })
+}
+
+export async function removeFavorite(recipeId: number){
+    const all = await database.get<Favorite>("favorites").query().fetch()
+    const fav = all.find(f => f.recipeId === recipeId)
+    if (fav) {
+        await database.write(async () => {
+            await fav.destroyPermanently()
+        })
+    }
+}
+
+export async function isFavorite(recipeId: number){
+    const all = await database.get<Favorite>("favorites").query().fetch()
+    return all.some(f => f.recipeId === recipeId)
 }
