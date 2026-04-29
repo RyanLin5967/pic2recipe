@@ -2,7 +2,6 @@ import { withObservables } from "@nozbe/watermelondb/react";
 import { database } from "@/src/database/index";
 import Favorite from "../database/models/Favorite";
 import { Text } from "react-native";
-import { View } from "lucide-react-native";
 
 function FavoritesHeader({favorites}: {favorites: Favorite[]}){
     return (
