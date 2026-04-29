@@ -1,5 +1,5 @@
 import { Tabs } from "expo-router";
-import { Camera, UtensilsCrossed } from "lucide-react-native"
+import { Camera, UtensilsCrossed, Heart } from "lucide-react-native"
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function TabLayout() {
@@ -45,6 +45,15 @@ export default function TabLayout() {
           title:"Scan",
           tabBarIcon: ({color, size})=> (
             <Camera color={color} size={size}/>
+          )
+        }}
+      />
+      <Tabs.Screen 
+        name="favorites"
+        options={{
+          title: "Favorites",
+          tabBarIcon: ({color, size, focused}) => (
+            <Heart color={color} size={size} fill={focused ? color: "transparent"}/>
           )
         }}
       />

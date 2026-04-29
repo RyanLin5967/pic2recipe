@@ -10,6 +10,8 @@ import { useRecipeDetail } from '@/src/hooks/useRecipeDetail'
 import { handleFindRecipes } from "../(tabs)";
 import LoadingScreen from "@/src/components/LoadingScreen";
 import ErrorScreen from "@/src/components/ErrorScreen";
+import FavoriteButton from "@/src/components/FavoriteButton";
+import { Recipe } from "@/src/types";
 
 export default function RecipeDetail() {
   const { id } = useLocalSearchParams();
@@ -29,12 +31,26 @@ export default function RecipeDetail() {
     return <ErrorScreen error={error.message}/>
   }
 
+  const recipeFav: Recipe = {
+    id: numId,
+    title: recipe!.title,
+    ingredients: recipe!.ingredients,
+    directions: recipe!.directions,
+    similarity: (recipe as any)!.similarity ?? 0,
+    cook_time_minutes: recipe!.cook_time_minutes,
+    difficulty: recipe!.difficulty,
+    equipment: recipe!.equipment,
+  }
+
   return (
     <SafeAreaView className="flex-1 bg-[rgb(28,29,33)]">
-      <Pressable onPress={handleFindRecipes} className="self-start p-2 bg-[rgb(63,69,79)] ml-4 rounded-2xl"><ChevronLeft color={"white"}/></Pressable>
+      <View>
+        <Pressable onPress={handleFindRecipes} className="self-start p-2 bg-[rgb(63,69,79)] ml-4 rounded-2xl"><ChevronLeft color={"white"}/></Pressable>
+      </View>
       <View className="mt-5 h-[1px] bg-[rgb(59,61,69)]"></View>
-      <View className="flex p-4 bg-[rgb(28,29,33)]">
+      <View className="flex flex-column p-4 bg-[rgb(28,29,33)]">
         <Text className="text-4xl font-bold text-white">{title}</Text>
+        <FavoriteButton recipe={recipeFav}/>
       </View>
       <View className="flex flex-row">
         <Text className="ml-5 text-[rgb(167,167,167)]">⏱️ {recipe?.cook_time_minutes ?? "Unknown"} min</Text>
