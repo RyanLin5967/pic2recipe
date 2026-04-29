@@ -24,7 +24,7 @@ export default function RecipeCard({recipe, ingredients}: {recipe: Recipe, ingre
       {usesText !== "" && <Text className="ml-5 my-4 text-[rgb(167,167,167)]">{usesText}</Text>}
       <View className="flex flex-row">
         <Text className="ml-5 mt-3 mb-5 text-[rgb(167,167,167)]">⏱️ {recipe.cook_time_minutes ?? "Unknown"} min</Text>
-        <Pressable onPress={() => router.push(`/recipe/${recipe.id}`)} className="p-2 px-4 m-2 ml-auto mr-3 bg-[rgb(28,29,33)] border border-[rgb(237,84,19)] rounded-3xl"><Text className="text-[rgb(237,84,19)] font-bold">View Recipe</Text></Pressable>
+        <Pressable onPress={() => router.push({pathname: "/recipe/[id]", params: {id: recipe.id, userIngredients: JSON.stringify(ingredients)}})} className="p-2 px-4 m-2 ml-auto mr-3 bg-[rgb(28,29,33)] border border-[rgb(237,84,19)] rounded-3xl"><Text className="text-[rgb(237,84,19)] font-bold">View Recipe</Text></Pressable>
       </View>
     </View>
   )

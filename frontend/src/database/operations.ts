@@ -32,6 +32,15 @@ async function isExistingIngredient(ingredient: string): Promise<boolean>{
     return allIng.some(ing => ing.toLowerCase().trim() === ingredient.toLowerCase().trim())
 }
 
+export async function removeIngByTitle(title: string){
+    const all = await database.get<Ingredient>('ingredients').query().fetch()
+    const match = all.find(ing => ing.title.toLowerCase().trim() === title.toLowerCase().trim())
+    if(match){
+        await database.write(async () => {
+            await match.destroyPermanently()
+        })
+    }
+}
 export async function addFavorite(recipe: Recipe){
     if (await isFavorite(recipe.id)) return
     await database.write(async () => {

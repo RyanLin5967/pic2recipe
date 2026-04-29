@@ -1,6 +1,7 @@
 import { View, Text, ScrollView } from "react-native";
+import MadeRecipeButton from "./MadeRecipeButton";
 
-export default function InstructionOption({instructions}: {instructions: string[]}){
+export default function InstructionOption({instructions, ingredients, userIngredients}: {instructions: string[], ingredients: string[], userIngredients: string[]}){
   return (
     <ScrollView>
       {instructions?.map((instr, index) => (
@@ -13,6 +14,7 @@ export default function InstructionOption({instructions}: {instructions: string[
           </View>
         </View>
       ))}
+      <MadeRecipeButton ingredients={ingredients} userIngredients={userIngredients}/>
     </ScrollView>
   )
 }

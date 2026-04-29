@@ -14,7 +14,10 @@ import FavoriteButton from "@/src/components/FavoriteButton";
 import { Recipe } from "@/src/types";
 
 export default function RecipeDetail() {
-  const { id } = useLocalSearchParams();
+  const { id, userIngredients: ingredientsStr } = useLocalSearchParams<{
+    id: string
+    userIngredients: string
+  }>()
   const numId = Number(Array.isArray(id) ? id[0] : id)
   const {data: recipe, isError, error, isPending} = useRecipeDetail(numId)
   const tabs = ["Ingredients", "Equipment", "Instructions"]
@@ -31,6 +34,7 @@ export default function RecipeDetail() {
   const ingredients = recipe?.ingredients
   const instructions = recipe?.directions
   const title = recipe?.title
+  const userIngredients = JSON.parse(ingredientsStr)
 
   const recipeFav: Recipe = {
     id: numId,
@@ -77,7 +81,7 @@ export default function RecipeDetail() {
         ))}
       </View>
       {selected === "Ingredients" && <IngredientsOption ingredients={ingredients!}/>}
-      {selected === "Instructions" && <InstructionOption instructions={instructions!}/>}
+      {selected === "Instructions" && <InstructionOption ingredients={ingredients!} userIngredients={userIngredients!} instructions={instructions!}/>}
       {selected === "Equipment" && <EquipmentOption equipment={equipment!}/>}
     </SafeAreaView>
   );
