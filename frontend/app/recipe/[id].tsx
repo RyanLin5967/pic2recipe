@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { View, Text, Pressable } from "react-native";
+import { View, Text, Pressable, Share } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { ChevronLeft } from "lucide-react-native";
+import { ChevronLeft, Share2 } from "lucide-react-native";
 import IngredientsOption from "@/src/components/IngredientsOption";
 import EquipmentOption from "@/src/components/EquipmentOption";
 import InstructionOption from "@/src/components/InstructionOption";
@@ -19,10 +19,6 @@ export default function RecipeDetail() {
   const {data: recipe, isError, error, isPending} = useRecipeDetail(numId)
   const tabs = ["Ingredients", "Equipment", "Instructions"]
   const [selected, setSelected] = useState(tabs[0])
-  const equipment = recipe?.equipment ?? ["Unknown"]
-  const ingredients = recipe?.ingredients
-  const instructions = recipe?.directions
-  const title = recipe?.title
 
   if (isPending) {
     return <LoadingScreen message={"Recipe"}/>
@@ -30,6 +26,11 @@ export default function RecipeDetail() {
   if (isError) {
     return <ErrorScreen error={error.message}/>
   }
+
+  const equipment = recipe?.equipment ?? ["Unknown"]
+  const ingredients = recipe?.ingredients
+  const instructions = recipe?.directions
+  const title = recipe?.title
 
   const recipeFav: Recipe = {
     id: numId,
@@ -42,6 +43,15 @@ export default function RecipeDetail() {
     equipment: recipe!.equipment,
   }
 
+  const handleShare = async () => {
+    const ingredientsList = ingredients?.join("\n• ")
+    const stepList = instructions?.map((step, index) => `${index +1}. ${step}`).join("\n")
+
+    await Share.share({
+      message: `${recipe!.title}\n\n ⏱️ ${recipe!.cook_time_minutes ?? "Unknown"} min | ${recipe!.difficulty ?? "Unknown"}\n\nIngredient:\n• ${ingredientsList}\n\nInstructions:\n${stepList}\n\nShared from pic2recipe`
+    })
+  }
+
   return (
     <SafeAreaView className="flex-1 bg-[rgb(28,29,33)]">
       <View>
@@ -50,7 +60,10 @@ export default function RecipeDetail() {
       <View className="mt-5 h-[1px] bg-[rgb(59,61,69)]"></View>
       <View className="flex flex-column p-4 bg-[rgb(28,29,33)]">
         <Text className="text-4xl font-bold text-white">{title}</Text>
-        <FavoriteButton recipe={recipeFav}/>
+        <View className="flex flex-row">
+          <FavoriteButton recipe={recipeFav}/>
+          <Pressable onPress={handleShare} className="p-2"><Share2 color="white" size={24}/></Pressable>
+        </View>
       </View>
       <View className="flex flex-row">
         <Text className="ml-5 text-[rgb(167,167,167)]">⏱️ {recipe?.cook_time_minutes ?? "Unknown"} min</Text>
