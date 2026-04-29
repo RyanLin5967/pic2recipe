@@ -10,11 +10,16 @@ const queryClient = new QueryClient()
 
 Sentry.init({
   dsn: process.env.EXPO_PUBLIC_SENTRY_DSN,
+  maxBreadcrumbs: 20,
+  beforeSend(event) {
+    return event
+  },
   debug: __DEV__,
   tracesSampleRate: 1.0,
   integrations: [
     Sentry.reactNavigationIntegration(),
   ]
+  
 });
 
 export default Sentry.wrap(function RootLayout() {
