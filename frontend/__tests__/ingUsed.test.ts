@@ -1,3 +1,10 @@
+jest.mock("@/src/database/index", () => ({
+  database: {
+    get: jest.fn(),
+    write: jest.fn(),
+  }
+}))
+
 import { usesWhatIngredients } from "@/src/components/RecipeCard";
 import { Recipe } from "@/src/types";
 
